@@ -1,0 +1,12 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem;
+}
+
+.result {
+  white-space: break-spaces;
+  font-size: 0.8rem;
+  padding-left: 0.5rem;
+  border-left: 1px solid gray;
+}
