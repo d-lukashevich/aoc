@@ -1,4 +1,5 @@
-import { PuzzleRenderer } from '../../components/PuzzleRenderer';
+import { PuzzleRenderer } from 'components/PuzzleRenderer';
+import { Layout } from 'components/Layout';
 
 type Monkey = {
   items: number[];
@@ -101,5 +102,9 @@ const solveSecond = () => {
 };
 
 export default function Day() {
-  return <PuzzleRenderer day={11} func={solveSecond} first={solveFirst} second={solveSecond} />;
+  return (
+    <Layout>
+      <PuzzleRenderer day={11} func={solveSecond} first={solveFirst} second={solveSecond} />
+    </Layout>
+  );
 }
