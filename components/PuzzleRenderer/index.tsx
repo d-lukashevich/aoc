@@ -19,7 +19,7 @@ export const PuzzleRenderer = ({ func, day }: PuzzleRendererProps) => {
   const { data } = useInput(day);
   return (
     <div className={styles.container}>
-      <div>
+      <div className="overflow-auto">
         <pre>{data}</pre>
       </div>
       {data && (

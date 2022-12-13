@@ -28,3 +28,11 @@ a {
     background: #0f0f23;
   }
 }
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
