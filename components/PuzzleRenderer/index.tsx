@@ -1,3 +1,4 @@
+import React from 'react';
 import { useInput } from '../../utils';
 import styles from './index.module.css';
 
@@ -26,7 +27,7 @@ export const PuzzleRenderer = ({ func, day }: PuzzleRendererProps) => {
         <pre
           className={styles.result}
           dangerouslySetInnerHTML={{
-            __html: getHtml(func(data)),
+            __html: data ? getHtml(func(data)) : '',
           }}
         />
       )}
