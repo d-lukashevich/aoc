@@ -125,7 +125,7 @@ const solveSecond = (raw: string) => solve(raw, Math.pow(10, 12));
 export default function Day() {
   return (
     <Layout>
-      <PuzzleRenderer day={17} func={solveSecond} first={solveFirst} second={solveSecond} />
+      <PuzzleRenderer func={solveSecond} first={solveFirst} second={solveSecond} />
     </Layout>
   );
 }

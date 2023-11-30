@@ -1,11 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
-export const useInput = (num: number) => {
+export const useInput = (year: number, day: number) => {
   return useQuery({
-    queryKey: [`input-${num}`],
+    queryKey: [`input-${year}-${day}`],
     queryFn: (): Promise<string> => {
-      return axios.get(`/inputs/${num}.txt`).then((res) => res.data);
+      return axios.get(`/inputs/${year}/${day}.txt`).then((res) => res.data);
     },
   });
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { useInput } from '../../utils';
 import styles from './index.module.css';
 
@@ -8,7 +9,6 @@ type PuzzleRendererProps = {
   func: Solver;
   first?: Solver;
   second?: Solver;
-  day: number;
 };
 
 const getHtml = (payload: any) => {
@@ -16,8 +16,10 @@ const getHtml = (payload: any) => {
   return JSON.stringify(payload, null, 2) || '';
 };
 
-export const PuzzleRenderer = ({ func, day }: PuzzleRendererProps) => {
-  const { data } = useInput(day);
+export const PuzzleRenderer = ({ func }: PuzzleRendererProps) => {
+  const { route } = useRouter();
+  const [, year, day] = route.split('/').filter(Boolean).map(Number);
+  const { data } = useInput(year, day);
   return (
     <div className={styles.container}>
       <div className="overflow-auto">

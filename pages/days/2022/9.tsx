@@ -1,4 +1,4 @@
-import { PuzzleRenderer } from '../../components/PuzzleRenderer';
+import { PuzzleRenderer } from '../../../components/PuzzleRenderer';
 
 const solve = (raw: string) => {
   const text = '"' + raw.replaceAll('\n', '","') + '"';
@@ -13,5 +13,5 @@ const solve = (raw: string) => {
 };
 
 export default function Day() {
-  return <PuzzleRenderer day={9} func={solve} />;
+  return <PuzzleRenderer func={solve} />;
 }

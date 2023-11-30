@@ -1,4 +1,4 @@
-import { PuzzleRenderer } from '../../components/PuzzleRenderer';
+import { PuzzleRenderer } from '../../../components/PuzzleRenderer';
 
 type Line = ['addx', number] | ['noop', null];
 
@@ -51,5 +51,5 @@ const solveSecond = (raw: string) => {
 };
 
 export default function Day() {
-  return <PuzzleRenderer day={10} func={solveSecond} first={solveFirst} second={solveSecond} />;
+  return <PuzzleRenderer func={solveSecond} first={solveFirst} second={solveSecond} />;
 }

@@ -58,7 +58,7 @@ const solveFirst = (raw: string) => {
 export default function Day() {
   return (
     <Layout>
-      <PuzzleRenderer day={25} func={solveFirst} first={solveFirst} second={solveFirst} />
+      <PuzzleRenderer func={solveFirst} first={solveFirst} second={solveFirst} />
     </Layout>
   );
 }
