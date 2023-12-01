@@ -1,5 +1,5 @@
-import { PuzzleRenderer } from '../../../components/PuzzleRenderer';
-import { parseRows } from '../../../utils';
+import { PuzzleRenderer } from '@units/PuzzleRenderer';
+import { parseRows } from '@utils';
 
 const first = (raw: string) => {
   const data = parseRows(raw);
