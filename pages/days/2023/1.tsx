@@ -5,15 +5,15 @@ const first = (raw: string) => {
   const data = parseRows(raw);
 
   const nums = data.map((str) => {
-    let left: number | undefined = undefined;
-    let right: number | undefined = undefined;
+    let left: number | undefined;
+    let right: number | undefined;
     let i = 0;
-    while ((left === undefined || right === undefined) && i < str.length) {
+    while ((!left || !right) && i < str.length) {
       left ??= isNaN(Number(str[i])) ? undefined : Number(str[i]);
       right ??= isNaN(Number(str[str.length - i - 1])) ? undefined : Number(str[str.length - i - 1]);
       i++;
     }
-    if (left === undefined || right === undefined) throw new Error('Invalid input');
+    if (!left || !right) throw new Error('Invalid input');
     return Number(`${left}${right}`);
   });
 
@@ -32,7 +32,6 @@ const values: Record<string, number> = {
   seven: 7,
   eight: 8,
   nine: 9,
-  0: 0,
   1: 1,
   2: 2,
   3: 3,
@@ -44,32 +43,32 @@ const values: Record<string, number> = {
   9: 9,
 };
 
-const solve = (raw: string) => {
+const second = (raw: string) => {
   const data = parseRows(raw);
 
   const nums = data.map((str) => {
-    let left: number | undefined = undefined;
-    let right: number | undefined = undefined;
+    let left: number | undefined;
+    let right: number | undefined;
 
     // This should be optimized to not check known impossible values
     for (let i = 1; i <= str.length; i++) {
-      if (left !== undefined) break;
+      if (left) break;
       for (let j = 0; j < i; j++) {
         const candidate = str.slice(j, i);
         left ??= values[candidate];
-        if (left !== undefined) break;
+        if (left) break;
       }
     }
 
     for (let i = str.length; i > 0; i--) {
-      if (right !== undefined) break;
+      if (right) break;
       for (let j = i - 1; j >= 0; j--) {
         const candidate = str.slice(j, i);
         right ??= values[candidate];
-        if (right !== undefined) break;
+        if (right) break;
       }
     }
-    if (left === undefined || right === undefined) throw new Error('Invalid input');
+    if (!left || !right) throw new Error('Invalid input');
     return Number(`${left}${right}`);
   });
 
@@ -77,5 +76,5 @@ const solve = (raw: string) => {
 };
 
 export default function Day() {
-  return <PuzzleRenderer func={solve} first={first} second={solve} />;
+  return <PuzzleRenderer func={second} first={first} second={second} />;
 }
