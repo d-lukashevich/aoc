@@ -9,3 +9,8 @@ export const useInput = (year: number, day: number) => {
     },
   });
 };
+
+export const parseRows = (raw: string): string[] => {
+  const text = '"' + raw.replaceAll('\n', '","') + '"';
+  return JSON.parse(`[${text}]`);
+};

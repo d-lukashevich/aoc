@@ -1,12 +1,8 @@
 import { PuzzleRenderer } from '../../../components/PuzzleRenderer';
-
-const parse = (raw: string): string[] => {
-  const text = '"' + raw.replaceAll('\n', '","') + '"';
-  return JSON.parse(`[${text}]`);
-};
+import { parseRows } from '../../../utils';
 
 const first = (raw: string) => {
-  const data = parse(raw);
+  const data = parseRows(raw);
 
   const nums = data.map((str) => {
     let left: number | undefined = undefined;
@@ -49,7 +45,7 @@ const values: Record<string, number> = {
 };
 
 const solve = (raw: string) => {
-  const data = parse(raw);
+  const data = parseRows(raw);
 
   const nums = data.map((str) => {
     let left: number | undefined = undefined;
