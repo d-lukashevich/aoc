@@ -34,9 +34,11 @@ export default async function handler({ query }: NextApiRequest, res: NextApiRes
   if (!puzzle) {
     try {
       const aocResponse = await fetch(`${AOC_HOST}/${year}/day/${day}/input`, aocOptions);
-      puzzle = await aocResponse.text();
-      if (!fs.existsSync(folderPath)) fs.mkdirSync(folderPath);
-      fs.writeFileSync(filePath, puzzle, 'utf-8');
+      if (aocResponse.status === 200) {
+        puzzle = await aocResponse.text();
+        if (!fs.existsSync(folderPath)) fs.mkdirSync(folderPath);
+        fs.writeFileSync(filePath, puzzle, 'utf-8');
+      }
     } catch (error) {}
   }
 
