@@ -5,7 +5,7 @@ export const useInput = (year: number, day: number) => {
   return useQuery({
     queryKey: [`input-${year}-${day}`],
     queryFn: (): Promise<string> => {
-      return axios.get(`http://localhost:3000/api/puzzle-input?year=${year}&day=${day}`).then((res) => res.data);
+      return axios.get(`http://localhost:8090/api/puzzle-input?year=${year}&day=${day}`).then((res) => res.data);
     },
   });
 };
