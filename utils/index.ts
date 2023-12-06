@@ -14,3 +14,10 @@ export const parseRows = (raw: string): string[] => {
   const text = '"' + raw.replaceAll('\n', '","') + '"';
   return JSON.parse(`[${text}]`);
 };
+
+export const getNumsList = (str: string) => {
+  return str
+    .split(' ')
+    .filter((str) => str !== '')
+    .map(Number);
+};
