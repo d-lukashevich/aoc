@@ -1,5 +1,5 @@
 import { PuzzleRenderer } from '@units/PuzzleRenderer';
-import { parseRows } from '@utils';
+import { parseRows, withCache } from '@utils';
 
 const rowRegex = /(.+) (.+)/;
 
@@ -8,19 +8,6 @@ const getData = (raw: string) => {
     const [, line, numsStr] = rowRegex.exec(row)!;
     return { line, nums: numsStr.split(',').map(Number) };
   });
-};
-
-const withCache = (func: (...args: [string, number[]]) => number) => {
-  const cache: Record<string, number> = {};
-
-  return (line: string, nums: number[]) => {
-    const key = line + nums.join(',');
-    if (cache[key] !== undefined) return cache[key];
-
-    const result = func(line, nums);
-    cache[key] = result;
-    return result;
-  };
 };
 
 const count = withCache((line: string, nums: number[]): number => {

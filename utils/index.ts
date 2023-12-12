@@ -21,3 +21,14 @@ export const getNumsList = (str: string) => {
     .filter((str) => str !== '')
     .map(Number);
 };
+
+export const withCache = <Args extends unknown[], Result extends unknown>(fn: (...args: Args) => Result) => {
+  const cache: Record<string, Result> = {};
+  return (...args: Args) => {
+    const key = JSON.stringify(args);
+    if (key in cache) return cache[key];
+    const result = fn(...args);
+    cache[key] = result;
+    return result;
+  };
+};
