@@ -32,3 +32,6 @@ export const withCache = <Args extends unknown[], Result extends unknown>(fn: (.
     return result;
   };
 };
+
+export const gcd = (a: number, b: number): number => (a ? gcd(b % a, a) : b);
+export const lcm = (...nums: number[]) => nums.reduce((a, b) => (a * b) / gcd(a, b));

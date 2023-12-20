@@ -1,5 +1,5 @@
 import { PuzzleRenderer } from '@units/PuzzleRenderer';
-import { parseRows } from '@utils';
+import { lcm, parseRows } from '@utils';
 
 type Turn = 'L' | 'R';
 type Map = Record<string, { L: string; R: string }>;
@@ -28,9 +28,6 @@ const getSteps = (turns: Turn[], map: Map, starts: string[], stop: RegExp) => {
     return i;
   });
 };
-
-const gcd = (a: number, b: number): number => (a ? gcd(b % a, a) : b);
-const lcm = (...nums: number[]) => nums.reduce((a, b) => (a * b) / gcd(a, b));
 
 const first = (raw: string) => {
   const { turns, map } = getData(raw);
