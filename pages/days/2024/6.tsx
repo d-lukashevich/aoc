@@ -59,7 +59,7 @@ const second = (raw: string) => {
 
   data.forEach((row, y) => {
     row.forEach((blockCell, x) => {
-      if (blockCell === '#') return;
+      if (blockCell !== '.') return;
       const block = [x, y];
 
       let position = start;
@@ -92,5 +92,5 @@ const second = (raw: string) => {
 };
 
 export default function Day() {
-  return <PuzzleRenderer func={first} first={first} second={second} />;
+  return <PuzzleRenderer func={second} first={first} second={second} />;
 }
