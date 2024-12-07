@@ -12,18 +12,23 @@ const constructSolution = (resolver: (a: number, b: number) => number[]) => {
   return (raw: string) => {
     const data = getData(raw);
 
-    const calc = ([first, ...rest]: number[], limit: number) => {
-      if (!rest.length) return new Set([first]);
-      const result = new Set<number>();
-      calc(rest, limit).forEach((num) => {
-        resolver(num, first).forEach((num) => num <= limit && result.add(num));
-      });
+    const calc = (nums: number[], limit: number) => {
+      const stack: number[][] = [nums];
 
-      return result;
+      while (stack.length) {
+        const [a, b, ...rest] = stack.pop()!;
+        if (a > limit) continue;
+        if (b === undefined) {
+          if (a === limit) return true;
+          continue;
+        }
+        resolver(a, b).forEach((res) => stack.push([res, ...rest]));
+      }
+      return false;
     };
 
     return data.reduce((acc, { summary, nums }) => {
-      return calc(nums.reverse(), summary).has(summary) ? acc + summary : acc;
+      return calc(nums, summary) ? acc + summary : acc;
     }, 0);
   };
 };
