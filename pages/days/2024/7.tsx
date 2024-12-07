@@ -12,18 +12,18 @@ const constructSolution = (resolver: (a: number, b: number) => number[]) => {
   return (raw: string) => {
     const data = getData(raw);
 
-    const calc = ([first, ...rest]: number[]) => {
+    const calc = ([first, ...rest]: number[], limit: number) => {
       if (!rest.length) return new Set([first]);
       const result = new Set<number>();
-      calc(rest).forEach((num) => {
-        resolver(num, first).forEach((num) => result.add(num));
+      calc(rest, limit).forEach((num) => {
+        resolver(num, first).forEach((num) => num <= limit && result.add(num));
       });
 
       return result;
     };
 
     return data.reduce((acc, { summary, nums }) => {
-      return calc(nums.reverse()).has(summary) ? acc + summary : acc;
+      return calc(nums.reverse(), summary).has(summary) ? acc + summary : acc;
     }, 0);
   };
 };
@@ -32,5 +32,5 @@ const first = constructSolution((a, b) => [a + b, a * b]);
 const second = constructSolution((a, b) => [a + b, a * b, Number(`${a}${b}`)]);
 
 export default function Day() {
-  return <PuzzleRenderer func={first} first={first} second={second} />;
+  return <PuzzleRenderer func={second} first={first} second={second} />;
 }
