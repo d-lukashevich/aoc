@@ -20,9 +20,14 @@ const i1 = (num: bigint) => prune(mix(num, num * 64n));
 const i2 = (num: bigint) => prune(mix(num, BigInt(Math.floor(Number(num / 32n)))));
 const i3 = (num: bigint) => prune(mix(num, num * 2048n));
 const evolveNumber = (prev: bigint) => i3(i2(i1(prev)));
-const evolveDeep = withCache((current: bigint, deep: number): bigint => {
-  for (let i = 0; i < deep; i++) current = evolveNumber(current);
-  return current;
+
+const evolveDeep = (current: bigint, deep: number): bigint => {
+  if (deep === 0) return current;
+  return evolveNumber(evolveDeep(current, deep - 1));
+};
+const evolveDeepCache = withCache((current: bigint, deep: number): bigint => {
+  if (deep === 0) return current;
+  return evolveNumber(evolveDeepCache(current, deep - 1));
 });
 
 const first = (raw: string) => {
@@ -31,41 +36,31 @@ const first = (raw: string) => {
 
 const getPrice = (num: bigint) => Number(num.toString().at(-1));
 
-// very slow one because of the brute force
 const second = (raw: string) => {
   const data = getData(raw);
-  const hash = new Map<bigint, Map<string, number>>();
 
-  const possibleKeys = new Set<string>();
+  const hash = new Map<string, number>();
 
   data.forEach((num) => {
-    const map = new Map<string, number>();
-    hash.set(num, map);
+    const seenCombos = new Set<string>();
 
     const prices: number[] = [];
     const diffs: number[] = [];
 
     for (let i = 0; i <= 2000; i++) {
-      const price = getPrice(evolveDeep(num, i));
+      const price = getPrice(evolveDeepCache(num, i));
       prices.push(price);
       diffs.push(prices[i] - prices[i - 1] || 0);
       if (i < 4) continue;
       const key = diffs.slice(i - 3, i + 1).join(',');
-      possibleKeys.add(key);
-      if (!map.has(key)) map.set(key, price);
+      if (!seenCombos.has(key)) {
+        seenCombos.add(key);
+        hash.set(key, (hash.get(key) ?? 0) + price);
+      }
     }
   });
 
-  let max = 0;
-  possibleKeys.forEach((key) => {
-    const total = data.reduce((acc, num) => {
-      const price = hash.get(num)?.get(key) ?? 0;
-      return acc + price;
-    }, 0);
-    max = Math.max(max, total);
-  });
-
-  return max;
+  return Math.max(...hash.values());
 };
 
 export default function Day() {
