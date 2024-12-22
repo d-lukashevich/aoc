@@ -10,6 +10,15 @@ export const useInput = (year: number, day: number) => {
   });
 };
 
+export const withPerfLog = <Args extends unknown[], Result extends unknown>(fn: (...args: Args) => Result) => {
+  return (...args: Args) => {
+    const start = performance.now();
+    const result = fn(...args);
+    console.log(`Took ${performance.now() - start}ms`);
+    return result;
+  };
+};
+
 export const parseRows = (raw: string): string[] => {
   const text = '"' + raw.replaceAll('\n', '","') + '"';
   return JSON.parse(`[${text}]`);
