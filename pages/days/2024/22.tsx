@@ -3,17 +3,6 @@ import { parseRows } from '@utils';
 
 const getData = (raw: string) => parseRows(raw).map(BigInt);
 
-export const withCache = <Args extends unknown[], Result extends unknown>(fn: (...args: Args) => Result) => {
-  const cache: Record<string, Result> = {};
-  return (...args: Args) => {
-    const key = args.map((num) => num?.toString()).join('::');
-    if (key in cache) return cache[key];
-    const result = fn(...args);
-    cache[key] = result;
-    return result;
-  };
-};
-
 const mix = (a: bigint, b: bigint) => a ^ b;
 const prune = (num: bigint) => num % 16777216n;
 const i1 = (num: bigint) => prune(mix(num, num * 64n));
@@ -21,14 +10,19 @@ const i2 = (num: bigint) => prune(mix(num, BigInt(Math.floor(Number(num / 32n)))
 const i3 = (num: bigint) => prune(mix(num, num * 2048n));
 const evolveNumber = (prev: bigint) => i3(i2(i1(prev)));
 
+const cache = new Map<bigint, Map<number, bigint>>();
 const evolveDeep = (current: bigint, deep: number): bigint => {
-  if (deep === 0) return current;
-  return evolveNumber(evolveDeep(current, deep - 1));
+  let cacheDeep = cache.get(current);
+  const cachedValue = cacheDeep?.get(deep);
+  if (cachedValue !== undefined) return cachedValue;
+  const value = deep ? evolveNumber(evolveDeep(current, deep - 1)) : current;
+  if (!cacheDeep) {
+    cacheDeep = new Map();
+    cache.set(current, cacheDeep);
+  }
+  cacheDeep.set(deep, value);
+  return value;
 };
-const evolveDeepCache = withCache((current: bigint, deep: number): bigint => {
-  if (deep === 0) return current;
-  return evolveNumber(evolveDeepCache(current, deep - 1));
-});
 
 const first = (raw: string) => {
   return Number(getData(raw).reduce((acc, num) => evolveDeep(num, 2000) + acc, 0n));
@@ -48,7 +42,7 @@ const second = (raw: string) => {
     const diffs: number[] = [];
 
     for (let i = 0; i <= 2000; i++) {
-      const price = getPrice(evolveDeepCache(num, i));
+      const price = getPrice(evolveDeep(num, i));
       prices.push(price);
       diffs.push(prices[i] - prices[i - 1] || 0);
       if (i < 4) continue;
