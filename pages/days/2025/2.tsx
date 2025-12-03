@@ -27,6 +27,7 @@ const second = (raw: string) => {
       const strId = String(i);
       const mid = strId.length / 2;
       for (let len = 1; len <= mid; len++) {
+        if (strId.length % len !== 0) continue;
         const chunks = new Set<string>();
         for (let pos = 0; pos < strId.length; pos += len) {
           chunks.add(strId.slice(pos, pos + len));
