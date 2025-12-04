@@ -1,5 +1,5 @@
 import { PuzzleRenderer } from '@units/PuzzleRenderer';
-import { parseRows, withPerfLog } from '@utils';
+import { parseRows } from '@utils';
 
 const getData = (raw: string) => {
   return parseRows(raw).map((str) => [...str]);
@@ -71,5 +71,5 @@ const second = (raw: string) => {
 };
 
 export default function Day() {
-  return <PuzzleRenderer func={withPerfLog(second)} first={first} second={second} />;
+  return <PuzzleRenderer func={second} first={first} second={second} />;
 }
